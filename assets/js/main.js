@@ -316,8 +316,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const closeEls = Array.from(modal.querySelectorAll('[data-team-modal-close]'))
   const teamRoot = document.querySelector('.our-team-main')
   const declaredJsonPath =
-    (teamRoot && teamRoot.getAttribute('data-team-json')) ||
-    'data/team.json'
+    (teamRoot && teamRoot.dataset.teamJson) || 'data/team.json'
   const TEAM_DATA_URL = new URL(
     declaredJsonPath,
     window.location.href,
@@ -383,7 +382,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   cards.forEach((card) => {
-    const id = normalizeId(card.getAttribute('data-person-id'))
+    const id = normalizeId(card.dataset.personId)
     if (!card.hasAttribute('tabindex')) card.setAttribute('tabindex', '0')
     if (!card.hasAttribute('role')) card.setAttribute('role', 'button')
     if (!card.hasAttribute('aria-label')) {
@@ -409,7 +408,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   const openModal = (card) => {
-    const id = normalizeId(card.getAttribute('data-person-id'))
+    const id = normalizeId(card.dataset.personId)
     const profile = profilesById.get(id) || {
       name: card.querySelector('.our-team-name')?.textContent?.trim() || '',
       role: card.querySelector('.our-team-role')?.textContent?.trim() || '',
@@ -462,7 +461,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (!newsRoot || !grid) return
 
   const declaredJsonPath =
-    newsRoot.getAttribute('data-news-json') || 'data/news-resources.json'
+    newsRoot.dataset.newsJson || 'data/news-resources.json'
   const jsonUrl = new URL(declaredJsonPath, window.location.href).toString()
   const siteRootUrl = new URL('../', jsonUrl).toString()
   const isHttpLike =
@@ -549,9 +548,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const articleRoot = document.querySelector('.article-page-main')
   if (!articleRoot) return
 
-  const articleId = String(articleRoot.getAttribute('data-news-id') || '').trim()
+  const articleId = String(articleRoot.dataset.newsId || '').trim()
   const declaredJsonPath =
-    articleRoot.getAttribute('data-news-json') || 'data/news-resources.json'
+    articleRoot.dataset.newsJson || 'data/news-resources.json'
   if (!articleId) return
 
   const titleEl = articleRoot.querySelector('[data-article-title]')
