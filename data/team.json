@@ -1,0 +1,161 @@
+{
+  "people": [
+    {
+      "id": "michael-kunst",
+      "name": "Michael Kunst",
+      "role": "CEO",
+      "image": "assets/img/Michael_Kunst.jpg",
+      "bio": [
+        "Joined in 2023.",
+        "Michael took the helm of the business in April 2024, having previously been Chief Strategy Officer.",
+        "He joined from Philip Morris International, where he held several positions of increasing responsibility, including Senior Vice President, Commercialization. He was previously a Senior Partner at management consulting firm, Bain & Company.",
+        "He has decades of experience within the pharmaceutical and consumer health industries in commercial strategy, and has a deep understanding of consumer, physician, payor, and patient perspectives.",
+        "Michael has a Bachelor's and Master's degree in Business Administration from European Business School in Germany."
+      ]
+    },
+    {
+      "id": "sylvain-beltzung",
+      "name": "Sylvain Beltzung",
+      "role": "Chief Financial Officer",
+      "image": "assets/img/Sylvain_Beltzung.jpg",
+      "bio": [
+        "Joined in 2025.",
+        "Biography details coming soon.",
+        "This profile is ready for final approved copy."
+      ]
+    },
+    {
+      "id": "laurent-martenet",
+      "name": "Laurent Martenet",
+      "role": "Chief People & Culture Officer",
+      "image": "assets/img/Laurent_Martenet.jpg",
+      "bio": [
+        "Joined in 2025.",
+        "Biography details coming soon.",
+        "This profile is ready for final approved copy."
+      ]
+    },
+    {
+      "id": "tomek-staszelis",
+      "name": "Tomek Staszelis",
+      "role": "Vice President, IT, Aspeya & Life Sciences",
+      "image": "assets/img/Tomek_Staszelis.jpg",
+      "bio": [
+        "Joined in 2025.",
+        "Biography details coming soon.",
+        "This profile is ready for final approved copy."
+      ]
+    },
+    {
+      "id": "begona-carreno",
+      "name": "Begoña Carreño",
+      "role": "Chief Business Development & Licensing Officer",
+      "image": "assets/img/Begona_Carreno.jpg",
+      "bio": [
+        "Joined in 2025.",
+        "Biography details coming soon.",
+        "This profile is ready for final approved copy."
+      ]
+    },
+    {
+      "id": "annika-carlsson-berg",
+      "name": "Annika Carlsson Berg",
+      "role": "Chief Quality Officer",
+      "image": "assets/img/Annika_Carlsson_Berg.jpg",
+      "bio": [
+        "Joined in 2025.",
+        "Biography details coming soon.",
+        "This profile is ready for final approved copy."
+      ]
+    },
+    {
+      "id": "thomas-blaettler",
+      "name": "Dr Thomas Blaettler",
+      "role": "Chief Medical Officer",
+      "image": "assets/img/Thomas_Blaettler.jpg",
+      "bio": [
+        "Joined in 2025.",
+        "Biography details coming soon.",
+        "This profile is ready for final approved copy."
+      ]
+    },
+    {
+      "id": "kim-binderup",
+      "name": "Kim Binderup",
+      "role": "Chief Consumer Health Officer",
+      "image": "assets/img/Kim_Binderup.jpg",
+      "bio": [
+        "Joined in 2025.",
+        "Biography details coming soon.",
+        "This profile is ready for final approved copy."
+      ]
+    },
+    {
+      "id": "julia-hoeng",
+      "name": "Julia Hoeng",
+      "role": "Vice President, Innovation & Product Development (Cannabinoids)",
+      "image": "assets/img/Julia_Hoeng.jpg",
+      "bio": [
+        "Joined in 2025.",
+        "Biography details coming soon.",
+        "This profile is ready for final approved copy."
+      ]
+    },
+    {
+      "id": "michael-thomsen",
+      "name": "Michael Thomsen",
+      "role": "Managing Director, Oral CDMO",
+      "image": "assets/img/Michael_Thomsen.jpg",
+      "bio": [
+        "Joined in 2025.",
+        "Biography details coming soon.",
+        "This profile is ready for final approved copy."
+      ]
+    },
+    {
+      "id": "malene-kjaer-muller",
+      "name": "Malene Kjær Müller",
+      "role": "Vice President, Innovation & New Product Development",
+      "image": "assets/img/Malene_Kjaer_Muller.jpg",
+      "bio": [
+        "Joined in 2025.",
+        "Biography details coming soon.",
+        "This profile is ready for final approved copy."
+      ]
+    },
+    {
+      "id": "henri-skou",
+      "name": "Henri Skou",
+      "role": "Vice President, Global Operations & Supply Chain Management",
+      "image": "assets/img/Henri_Skou.jpg",
+      "bio": [
+        "Joined in 2025.",
+        "Biography details coming soon.",
+        "This profile is ready for final approved copy."
+      ]
+    },
+    {
+      "id": "karine-tasli",
+      "name": "Karine Tasli",
+      "role": "Director Strategic Initiatives",
+      "image": "assets/img/Karine_Tasli.jpg",
+      "bio": [
+        "Joined in 2025.",
+        "Prior to her appointment as Director Strategic Initiatives, Karine held various roles in driving organizational change and business transformation at Philip Morris International and Kearney.",
+        "She brings more than 15 years of experience in corporate strategy, transformation, mergers and acquisition, and business development.",
+        "Karine holds an MBA from ESCP Business School, France, and a Master's degree in Life Sciences Engineering from AgroParisTech, France."
+      ]
+    },
+    {
+      "id": "richard-oakley",
+      "name": "Richard Oakley",
+      "role": "Director Communications",
+      "image": "assets/img/Richard_Oakley.jpg",
+      "bio": [
+        "Joined in 2025.",
+        "Biography details coming soon.",
+        "This profile is ready for final approved copy."
+      ]
+    }
+  ]
+}
