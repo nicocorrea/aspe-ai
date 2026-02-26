@@ -1,104 +1,10 @@
 ;(() => {
   const qs = (s, el = document) => el.querySelector(s)
   const qsa = (s, el = document) => Array.from(el.querySelectorAll(s))
-  const INDEX_SCROLL_KEY = 'aspeya-index-scroll-target'
-  const onIndexPage =
-    window.location.pathname.endsWith('/index.html') ||
-    window.location.pathname === '/' ||
-    window.location.pathname === ''
-
-  const isMobileJoinTarget = (hash) =>
-    hash === '#join' && window.matchMedia('(max-width: 920px)').matches
-
-  const resolveScrollTarget = (hash) => {
-    if (isMobileJoinTarget(hash)) {
-      return qs('#join-card') || qs('#join')
-    }
-    return qs(hash)
-  }
-
-  const smoothScrollTo = (target) => {
-    if (!target) return
-    const header = qs('#site-header') || qs('.topbar')
-    const offset = header ? header.getBoundingClientRect().height + 12 : 120
-    const y = target.getBoundingClientRect().top + window.scrollY - offset
-    try {
-      window.scrollTo({ top: y, behavior: 'smooth' })
-    } catch (_err) {
-      // Fallback for browsers that don't support scroll options object.
-      window.scrollTo(0, y)
-    }
-  }
 
   // Footer year
   const yearEl = qs('#year')
   if (yearEl) yearEl.textContent = String(new Date().getFullYear())
-
-  // Internal anchors:
-  // Let browser handle default same-page anchor nav (with CSS smooth scroll),
-  // except mobile Join-us where we want to land on the Join card.
-  qsa('a[href^="#"]').forEach((a) => {
-    a.addEventListener('click', (e) => {
-      const href = a.getAttribute('href')
-      if (!href || href === '#') return
-
-      if (!onIndexPage || !isMobileJoinTarget(href)) return
-      const target = resolveScrollTarget(href)
-      if (!target) return
-      e.preventDefault()
-      smoothScrollTo(target)
-    })
-  })
-
-  // Smooth cross-page nav to index anchors
-  qsa('a[href*="index.html#"]').forEach((a) => {
-    a.addEventListener('click', (e) => {
-      const href = a.getAttribute('href')
-      if (!href) return
-      const resolvedHref = new URL(href, window.location.href).toString()
-
-      const hashIndex = href.indexOf('#')
-      if (hashIndex < 0) return
-      const hash = href.slice(hashIndex)
-
-      if (onIndexPage) {
-        const target = resolveScrollTarget(hash)
-        if (!target) return
-        e.preventDefault()
-        smoothScrollTo(target)
-        return
-      }
-
-      e.preventDefault()
-      try {
-        sessionStorage.setItem(INDEX_SCROLL_KEY, hash)
-      } catch (_err) {
-        // Some mobile/privacy contexts block storage access.
-      }
-      window.location.assign(resolvedHref)
-    })
-  })
-
-  // Handle pending cross-page smooth scroll on index
-  if (onIndexPage) {
-    let pendingHash = null
-    try {
-      pendingHash = sessionStorage.getItem(INDEX_SCROLL_KEY)
-    } catch (_err) {
-      pendingHash = null
-    }
-    if (pendingHash) {
-      try {
-        sessionStorage.removeItem(INDEX_SCROLL_KEY)
-      } catch (_err) {
-        // no-op
-      }
-      requestAnimationFrame(() => {
-        const target = resolveScrollTarget(pendingHash)
-        if (target) smoothScrollTo(target)
-      })
-    }
-  }
 
   // Make "What we do" innovation CTAs deterministic on mobile and desktop.
   // Some mobile browsers can be inconsistent with complex layered sections;

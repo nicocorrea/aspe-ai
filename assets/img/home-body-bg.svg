@@ -1,0 +1,26 @@
+<svg width="1442" height="2408" viewBox="0 0 1442 2408" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_54701_668)">
+<mask id="mask0_54701_668" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="3238" height="2408">
+<path d="M0 2401.99L1616.27 0L1792.02 86.1368L0 2401.99Z" fill="#BFFBEA"/>
+<path d="M0 2401.99L1767.33 213.144L1919.66 302.41L0 2401.99Z" fill="#BFFBEA"/>
+<path d="M0 2401.99L1918.45 427.191L2047.26 517.768L0 2401.99Z" fill="#BFFBEA"/>
+<path d="M0 2401.99L2069.4 642.318L2175.03 732.047L0 2401.99Z" fill="#BFFBEA"/>
+<path d="M0 2401.99L2219.92 858.657L2303.23 945.113L0 2401.99Z" fill="#BFFBEA"/>
+<path d="M0 2401.99L2369.64 1076.27L2432.22 1156.9L0 2401.99Z" fill="#BFFBEA"/>
+<path d="M0 2401.99L2518.24 1295.15L2562.33 1367.44L0 2401.99Z" fill="#BFFBEA"/>
+<path d="M0 2401.99L2665.42 1515.15L2693.88 1576.84L0 2401.99Z" fill="#BFFBEA"/>
+<path d="M0 2401.99L2810.92 1736.09L2827.08 1785.31L0 2401.99Z" fill="#BFFBEA"/>
+<path d="M0 2401.99L2954.67 1957.7L2962.05 1993.11L0 2401.99Z" fill="#BFFBEA"/>
+<path d="M0 2401.99L3096.69 2179.74L3098.74 2200.47L0 2401.99Z" fill="#BFFBEA"/>
+<path d="M0 2401.99H3237.07V2407.64L0 2401.99Z" fill="#BFFBEA"/>
+</mask>
+<g mask="url(#mask0_54701_668)">
+<rect width="1440" height="2408" fill="#BFFBEA"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_54701_668">
+<rect width="1442" height="2408" fill="white"/>
+</clipPath>
+</defs>
+</svg>
