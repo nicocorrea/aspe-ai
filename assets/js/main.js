@@ -1,3 +1,74 @@
+const IS_HTTP_LIKE =
+  window.location.protocol === 'http:' || window.location.protocol === 'https:'
+
+const loadJsonWithXhr = (url) =>
+  new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open('GET', url, true)
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState !== 4) return
+      const okStatus =
+        (xhr.status >= 200 && xhr.status < 300) ||
+        (xhr.status === 0 && xhr.responseText)
+      if (!okStatus) return reject(new Error(`XHR ${xhr.status}`))
+      try {
+        resolve(JSON.parse(xhr.responseText))
+      } catch (err) {
+        reject(err)
+      }
+    }
+    xhr.onerror = () => reject(new Error('XHR network error'))
+    xhr.send()
+  })
+
+const readJsonData = async (jsonUrl, fallbackPath) => {
+  if (IS_HTTP_LIKE) {
+    const response = await fetch(jsonUrl, { cache: 'no-store' })
+    if (!response.ok) throw new Error(`HTTP ${response.status}`)
+    return response.json()
+  }
+  return loadJsonWithXhr(fallbackPath || jsonUrl)
+}
+
+const resolveAnchorHref = (rawHref, siteRootUrl) =>
+  rawHref === '#' || /^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(rawHref)
+    ? rawHref
+    : new URL(rawHref, siteRootUrl).toString()
+
+const createNewsCardElement = (item, siteRootUrl) => {
+  const article = document.createElement('article')
+  article.className = 'news-card'
+  if (item.id) article.dataset.newsId = String(item.id)
+
+  const top = document.createElement('div')
+  top.className = 'news-card-top'
+
+  const title = document.createElement('h2')
+  title.className = 'news-card-title'
+  title.textContent = String(item.title || '')
+  top.appendChild(title)
+
+  const bottom = document.createElement('div')
+  bottom.className = 'news-card-bottom'
+
+  const date = document.createElement('p')
+  date.className = 'news-card-date'
+  date.textContent = String(item.date || '')
+
+  const copy = document.createElement('p')
+  copy.className = 'news-card-copy'
+  copy.textContent = String(item.description || '')
+
+  const btn = document.createElement('a')
+  btn.className = 'news-card-btn'
+  btn.href = resolveAnchorHref(String(item.anchorLink || '#'), siteRootUrl)
+  btn.textContent = 'Read the article'
+
+  bottom.append(date, copy, btn)
+  article.append(top, bottom)
+  return article
+}
+
 ;(() => {
   const qs = (s, el = document) => el.querySelector(s)
   const qsa = (s, el = document) => Array.from(el.querySelectorAll(s))
@@ -231,9 +302,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     String(value || '')
       .trim()
       .toLowerCase()
-  const isHttpLike =
-    window.location.protocol === 'http:' ||
-    window.location.protocol === 'https:'
 
   const profilesById = new Map()
 
@@ -246,39 +314,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     })
   }
 
-  const loadJsonWithXhr = (url) =>
-    new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest()
-      xhr.open('GET', url, true)
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState !== 4) return
-        const okStatus =
-          (xhr.status >= 200 && xhr.status < 300) ||
-          (xhr.status === 0 && xhr.responseText)
-        if (!okStatus) {
-          reject(new Error(`XHR ${xhr.status}`))
-          return
-        }
-        try {
-          resolve(JSON.parse(xhr.responseText))
-        } catch (err) {
-          reject(err)
-        }
-      }
-      xhr.onerror = () => reject(new Error('XHR network error'))
-      xhr.send()
-    })
-
   try {
-    if (isHttpLike) {
-      const response = await fetch(TEAM_DATA_URL, { cache: 'no-store' })
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
-      const data = await response.json()
-      parsePeopleIntoMap(data)
-    } else {
-      const data = await loadJsonWithXhr(declaredJsonPath)
-      parsePeopleIntoMap(data)
-    }
+    const data = await readJsonData(TEAM_DATA_URL, declaredJsonPath)
+    parsePeopleIntoMap(data)
   } catch (error) {
     console.error(`Failed to load team data from ${TEAM_DATA_URL}`, error)
   }
@@ -370,81 +408,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     newsRoot.dataset.newsJson || 'data/news-resources.json'
   const jsonUrl = new URL(declaredJsonPath, window.location.href).toString()
   const siteRootUrl = new URL('../', jsonUrl).toString()
-  const isHttpLike =
-    window.location.protocol === 'http:' || window.location.protocol === 'https:'
-
-  const loadJsonWithXhr = (url) =>
-    new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest()
-      xhr.open('GET', url, true)
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState !== 4) return
-        const okStatus =
-          (xhr.status >= 200 && xhr.status < 300) ||
-          (xhr.status === 0 && xhr.responseText)
-        if (!okStatus) return reject(new Error(`XHR ${xhr.status}`))
-        try {
-          resolve(JSON.parse(xhr.responseText))
-        } catch (err) {
-          reject(err)
-        }
-      }
-      xhr.onerror = () => reject(new Error('XHR network error'))
-      xhr.send()
-    })
-
-  const readNewsData = async () => {
-    if (isHttpLike) {
-      const response = await fetch(jsonUrl, { cache: 'no-store' })
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
-      return response.json()
-    }
-    return loadJsonWithXhr(declaredJsonPath)
-  }
-
-  const createNewsCard = (item) => {
-    const article = document.createElement('article')
-    article.className = 'news-card'
-    if (item.id) article.dataset.newsId = String(item.id)
-
-    const top = document.createElement('div')
-    top.className = 'news-card-top'
-
-    const title = document.createElement('h2')
-    title.className = 'news-card-title'
-    title.textContent = String(item.title || '')
-    top.appendChild(title)
-
-    const bottom = document.createElement('div')
-    bottom.className = 'news-card-bottom'
-
-    const date = document.createElement('p')
-    date.className = 'news-card-date'
-    date.textContent = String(item.date || '')
-
-    const copy = document.createElement('p')
-    copy.className = 'news-card-copy'
-    copy.textContent = String(item.description || '')
-
-    const btn = document.createElement('a')
-    btn.className = 'news-card-btn'
-    const rawHref = String(item.anchorLink || '#')
-    btn.href =
-      rawHref === '#' || /^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(rawHref)
-        ? rawHref
-        : new URL(rawHref, siteRootUrl).toString()
-    btn.textContent = 'Read the article'
-
-    bottom.append(date, copy, btn)
-    article.append(top, bottom)
-    return article
-  }
 
   try {
-    const data = await readNewsData()
+    const data = await readJsonData(jsonUrl, declaredJsonPath)
     const items = Array.isArray(data && data.items) ? data.items : []
     grid.innerHTML = ''
-    items.forEach((item) => grid.appendChild(createNewsCard(item)))
+    items.forEach((item) =>
+      grid.appendChild(createNewsCardElement(item, siteRootUrl)),
+    )
   } catch (error) {
     console.error(`Failed to render news cards from ${jsonUrl}`, error)
   }
@@ -467,62 +438,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const relatedDots = articleRoot.querySelector('[data-article-related-dots]')
   const jsonUrl = new URL(declaredJsonPath, window.location.href).toString()
   const siteRootUrl = new URL('../', jsonUrl).toString()
-  const isHttpLike =
-    window.location.protocol === 'http:' || window.location.protocol === 'https:'
-
-  const loadJsonWithXhr = (url) =>
-    new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest()
-      xhr.open('GET', url, true)
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState !== 4) return
-        const okStatus =
-          (xhr.status >= 200 && xhr.status < 300) ||
-          (xhr.status === 0 && xhr.responseText)
-        if (!okStatus) return reject(new Error(`XHR ${xhr.status}`))
-        try {
-          resolve(JSON.parse(xhr.responseText))
-        } catch (err) {
-          reject(err)
-        }
-      }
-      xhr.onerror = () => reject(new Error('XHR network error'))
-      xhr.send()
-    })
-
-  const createRelatedCard = (item) => {
-    const article = document.createElement('article')
-    article.className = 'news-card'
-    if (item.id) article.dataset.newsId = String(item.id)
-
-    const top = document.createElement('div')
-    top.className = 'news-card-top'
-    const title = document.createElement('h2')
-    title.className = 'news-card-title'
-    title.textContent = String(item.title || '')
-    top.appendChild(title)
-
-    const bottom = document.createElement('div')
-    bottom.className = 'news-card-bottom'
-    const date = document.createElement('p')
-    date.className = 'news-card-date'
-    date.textContent = String(item.date || '')
-    const copy = document.createElement('p')
-    copy.className = 'news-card-copy'
-    copy.textContent = String(item.description || '')
-    const btn = document.createElement('a')
-    btn.className = 'news-card-btn'
-    const rawHref = String(item.anchorLink || '#')
-    btn.href =
-      rawHref === '#' || /^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(rawHref)
-        ? rawHref
-        : new URL(rawHref, siteRootUrl).toString()
-    btn.textContent = 'Read the article'
-
-    bottom.append(date, copy, btn)
-    article.append(top, bottom)
-    return article
-  }
 
   const mountRelatedCarousel = (items) => {
     if (!relatedCarousel || !relatedTrack || !relatedDots) return
@@ -547,7 +462,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const grid = document.createElement('div')
       grid.className = 'news-grid'
-      pageItems.forEach((item) => grid.appendChild(createRelatedCard(item)))
+      pageItems.forEach((item) =>
+        grid.appendChild(createNewsCardElement(item, siteRootUrl)),
+      )
       slide.appendChild(grid)
       relatedTrack.appendChild(slide)
 
@@ -639,13 +556,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   try {
-    const data = isHttpLike
-      ? await (async () => {
-          const response = await fetch(jsonUrl, { cache: 'no-store' })
-          if (!response.ok) throw new Error(`HTTP ${response.status}`)
-          return response.json()
-        })()
-      : await loadJsonWithXhr(declaredJsonPath)
+    const data = await readJsonData(jsonUrl, declaredJsonPath)
 
     const items = Array.isArray(data && data.items) ? data.items : []
     const item = items.find((entry) => String(entry && entry.id) === articleId)
