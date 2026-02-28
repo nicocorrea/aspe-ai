@@ -77,6 +77,16 @@ const createNewsCardElement = (item, siteRootUrl) => {
   const yearEl = qs('#year')
   if (yearEl) yearEl.textContent = String(new Date().getFullYear())
 
+  const heroVideo = qs('.hero-video')
+  const heroVideoFrame = qs('[data-hero-video-frame]', heroVideo || document)
+  if (heroVideo && heroVideoFrame) {
+    const markHeroVideoLoaded = () => {
+      heroVideo.classList.add('is-loaded')
+    }
+
+    heroVideoFrame.addEventListener('load', markHeroVideoLoaded, { once: true })
+  }
+
   // Make "What we do" innovation CTAs deterministic on mobile and desktop.
   // Some mobile browsers can be inconsistent with complex layered sections;
   // this guarantees a direct page navigation for these links.

@@ -117,6 +117,9 @@ a:hover {
   inset: 0;
   z-index: 0;
   overflow: hidden;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.18)),
+    url('../img/vimeo_first.webp') center / cover no-repeat;
 }
 
 /* VIMEO IFRAME MAGIC */
@@ -130,6 +133,12 @@ a:hover {
   min-height: 100vh;
   transform: translate(-50%, -50%);
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.hero-video.is-loaded iframe {
+  opacity: 1;
 }
 
 /* DARK OVERLAY */
@@ -3294,6 +3303,10 @@ a:hover {
     font-size: 18px;
     padding: 16px 20px;
   }
+  .qc-text {
+    font-size: 26px;
+    line-height: 1.35;
+  }
 }
 
 @media (max-width: 720px) {
@@ -3339,6 +3352,10 @@ a:hover {
 @media (prefers-reduced-motion: reduce) {
   .hero-scroll-cue-arrow-wrap {
     animation: none;
+  }
+
+  .hero-video iframe {
+    transition: none;
   }
 }
 

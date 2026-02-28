@@ -22,6 +22,9 @@
     <!-- Replace with the exact font(s) used on the current site once we confirm them -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://player.vimeo.com" />
+    <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
+    <link rel="preconnect" href="https://i.vimeocdn.com" crossorigin />
     <!-- A good “neutral modern corporate” default -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
@@ -78,10 +81,12 @@
         <!-- VIDEO BACKGROUND -->
         <div class="hero-video">
           <iframe
+            data-hero-video-frame
             src="https://player.vimeo.com/video/1055146174?dnt=1&app_id=122963&loop=1&background=1"
             frameborder="0"
             allow="autoplay; fullscreen"
             allowfullscreen
+            loading="eager"
           >
           </iframe>
         </div>
