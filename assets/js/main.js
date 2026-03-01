@@ -1,5 +1,6 @@
 const IS_HTTP_LIKE =
-  window.location.protocol === 'http:' || window.location.protocol === 'https:'
+  globalThis.location.protocol === 'http:' ||
+  globalThis.location.protocol === 'https:'
 
 const loadJsonWithXhr = (url) =>
   new Promise((resolve, reject) => {
@@ -100,7 +101,7 @@ const createNewsCardElement = (item, siteRootUrl) => {
       if (!href) return
 
       e.preventDefault()
-      window.location.assign(href)
+      globalThis.location.assign(href)
     })
   })
 
@@ -146,7 +147,7 @@ const createNewsCardElement = (item, siteRootUrl) => {
   if (openBtn) openBtn.addEventListener('click', openModal)
   closeBtns.forEach((b) => b.addEventListener('click', closeModal))
 
-  window.addEventListener('keydown', (e) => {
+  globalThis.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modal && !modal.hidden) closeModal()
   })
 
@@ -242,11 +243,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!header) return
 
   const onScroll = () => {
-    header.classList.toggle('is-scrolled', window.scrollY > 10)
+    header.classList.toggle('is-scrolled', globalThis.scrollY > 10)
   }
 
   onScroll()
-  window.addEventListener('scroll', onScroll, { passive: true })
+  globalThis.addEventListener('scroll', onScroll, { passive: true })
 })
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -273,19 +274,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('click', (event) => {
     if (!nav.classList.contains('is-open')) return
-    if (window.innerWidth > 720) return
+    if (globalThis.innerWidth > 720) return
     if (topbar.contains(event.target)) return
     setMenuOpen(false)
   })
 
-  window.addEventListener('keydown', (event) => {
+  globalThis.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && nav.classList.contains('is-open')) {
       setMenuOpen(false)
     }
   })
 
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 720 && nav.classList.contains('is-open')) {
+  globalThis.addEventListener('resize', () => {
+    if (globalThis.innerWidth > 720 && nav.classList.contains('is-open')) {
       setMenuOpen(false)
     }
   })
@@ -293,8 +294,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
   const cards = Array.from(document.querySelectorAll('.our-team-card'))
+  const triggers = cards
+    .map((card) => card.querySelector('.our-team-card-trigger'))
+    .filter(Boolean)
   const modal = document.querySelector('#team-modal')
-  if (!cards.length || !modal) return
+  if (!cards.length || !triggers.length || !modal) return
 
   const imageEl = modal.querySelector('#team-modal-image')
   const nameEl = modal.querySelector('#team-modal-name')
@@ -306,7 +310,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     (teamRoot && teamRoot.dataset.teamJson) || 'data/team.json'
   const TEAM_DATA_URL = new URL(
     declaredJsonPath,
-    window.location.href,
+    globalThis.location.href,
   ).toString()
   const normalizeId = (value) =>
     String(value || '')
@@ -337,16 +341,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   cards.forEach((card) => {
     const id = normalizeId(card.dataset.personId)
-    if (!card.hasAttribute('tabindex')) card.setAttribute('tabindex', '0')
-    if (!card.hasAttribute('role')) card.setAttribute('role', 'button')
-    if (!card.hasAttribute('aria-label')) {
-      const name = card.querySelector('.our-team-name')
-      if (name)
-        card.setAttribute(
-          'aria-label',
-          `Open profile for ${name.textContent.trim()}`,
-        )
-    }
     if (id && !profilesById.has(id)) {
       console.warn(`No team JSON entry found for card id: ${id}`)
     }
@@ -361,7 +355,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (lastFocused) lastFocused.focus()
   }
 
-  const openModal = (card) => {
+  const openModal = (card, trigger) => {
     const id = normalizeId(card.dataset.personId)
     const profile = profilesById.get(id) || {
       name: card.querySelector('.our-team-name')?.textContent?.trim() || '',
@@ -374,7 +368,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       ],
     }
 
-    lastFocused = card
+    lastFocused = trigger
     imageEl.src = profile.image || ''
     imageEl.alt = profile.name || ''
     nameEl.textContent = profile.name || ''
@@ -393,18 +387,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.body.style.overflow = 'hidden'
   }
 
-  cards.forEach((card) => {
-    card.addEventListener('click', () => openModal(card))
-    card.addEventListener('keydown', (event) => {
-      if (event.key !== 'Enter' && event.key !== ' ') return
-      event.preventDefault()
-      openModal(card)
-    })
+  triggers.forEach((trigger) => {
+    const card = trigger.closest('.our-team-card')
+    if (!card) return
+    trigger.addEventListener('click', () => openModal(card, trigger))
   })
 
   closeEls.forEach((el) => el.addEventListener('click', closeModal))
 
-  window.addEventListener('keydown', (event) => {
+  globalThis.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !modal.hidden) closeModal()
   })
 })
@@ -416,7 +407,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const declaredJsonPath =
     newsRoot.dataset.newsJson || 'data/news-resources.json'
-  const jsonUrl = new URL(declaredJsonPath, window.location.href).toString()
+  const jsonUrl = new URL(declaredJsonPath, globalThis.location.href).toString()
   const siteRootUrl = new URL('../', jsonUrl).toString()
 
   try {
@@ -446,7 +437,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const relatedViewport = articleRoot.querySelector('.article-related-viewport')
   const relatedTrack = articleRoot.querySelector('[data-article-related-track]')
   const relatedDots = articleRoot.querySelector('[data-article-related-dots]')
-  const jsonUrl = new URL(declaredJsonPath, window.location.href).toString()
+  const jsonUrl = new URL(declaredJsonPath, globalThis.location.href).toString()
   const siteRootUrl = new URL('../', jsonUrl).toString()
 
   const mountRelatedCarousel = (items) => {
@@ -460,7 +451,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     relatedCarousel.style.display = ''
-    const cardsPerPage = window.matchMedia('(max-width: 980px)').matches ? 1 : 3
+    const cardsPerPage = globalThis.matchMedia('(max-width: 980px)').matches ? 1 : 3
     const pages = []
     for (let i = 0; i < items.length; i += cardsPerPage) {
       pages.push(items.slice(i, i + cardsPerPage))
@@ -579,10 +570,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (dateEl && item.date) dateEl.textContent = String(item.date)
     if (item.title) document.title = `Aspeya | ${String(item.title)}`
 
-    const relatedItems = items.filter((entry) => {
-      if (!entry || String(entry.id || '') === articleId) return false
-      return true
-    })
+    const relatedItems = items.filter(
+      (entry) => !!entry && String(entry.id || '') !== articleId,
+    )
     mountRelatedCarousel(relatedItems)
   } catch (error) {
     console.error(`Failed to load article metadata from ${jsonUrl}`, error)

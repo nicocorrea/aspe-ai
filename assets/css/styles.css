@@ -2014,8 +2014,18 @@ a:hover {
 .our-team-card {
   background: #002a29;
   overflow: hidden;
-  cursor: pointer;
   border: 0;
+}
+
+.our-team-card-trigger {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 .our-team-photo {
@@ -2033,7 +2043,7 @@ a:hover {
   transform: scale(1.06);
 }
 
-.our-team-card:focus-visible {
+.our-team-card-trigger:focus-visible {
   outline: 3px solid #00e3b3;
   outline-offset: 2px;
 }
